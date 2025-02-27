@@ -1,6 +1,6 @@
 import React from "react";
 import Layout from "../components/Layout";
-import Hero from "../components/common/Hero";
+import Hero from "../components/landingPage/Hero";
 
 const LandingPage = () => {
   return (
