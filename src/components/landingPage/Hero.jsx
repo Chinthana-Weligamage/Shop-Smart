@@ -3,7 +3,7 @@ import Section from "../Section";
 
 const Hero = () => {
   return (
-    <Section bgColor="primary">
+    <Section bgColor="white">
       <div className="bg-base-200 flex flex-row">
         <div className="w-1/2 p-16">
           <h1 className="text-5xl font-bold">Welcome to Shop Smart!</h1>
@@ -12,7 +12,7 @@ const Hero = () => {
             the world
           </p>
           <div className="flex gap-4 mt-10">
-            <button className="btn btn-lg btn-primary">Place an Request</button>
+            <button className="btn btn-lg btn-primary">Place a Request</button>
             <button className="btn btn-lg btn-secondary">
               Fulfill a Request
             </button>
