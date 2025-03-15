@@ -12,8 +12,8 @@ import Swal from "sweetalert2";
 const NewRequestForm = () => {
   const initialFormStructure = {
     name: "",
-    minPrice: "",
-    maxPrice: "",
+    minPrice: 0,
+    maxPrice: 0,
     category: "",
     condition: "",
     importCountry: "",
@@ -53,9 +53,22 @@ const NewRequestForm = () => {
     });
   };
 
+  const [priceValidation, setPriceValidation] = useState(
+    "Minimum Amount must be greater than $10, Maximum Amount must be greater than Minimum Amount"
+  );
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
+
+    if (formData.minPrice < 10) {
+      setPriceValidation(" Minimum price must be at least $10");
+    } else if (formData.maxPrice <= formData.minPrice) {
+      setPriceValidation("Maximum price must be greater than minimum price");
+    } else {
+      setPriceValidation(
+        "Minimum Amount must be greater than $10, Maximum Amount must be greater than Minimum Amount"
+      );
+    }
   };
 
   return (
@@ -103,8 +116,9 @@ const NewRequestForm = () => {
                     placeholder="Minimum Amount"
                     pattern="[0-9]*"
                     min={10}
+                    max={formData.maxPrice}
                     required
-                    value={formData.minPrice}
+                    value={formData.minPrice > 0 ? formData.minPrice : ""}
                     onChange={handleInputChange}
                   />
                   <input
@@ -113,21 +127,20 @@ const NewRequestForm = () => {
                     className="input validator w-full"
                     placeholder="Maximum Amount"
                     pattern="[0-9]*"
-                    min={10}
+                    min={parseInt(formData.minPrice, 10) + 1 || 10}
                     required
-                    value={formData.maxPrice}
+                    value={formData.maxPrice > 0 ? formData.maxPrice : ""}
                     onChange={handleInputChange}
                   />
-                  <p className="validator-hint col-span-2">
-                    Minimum Amount must be greater than $10, Maximum Amount must
-                    be greater than Minimum Amount
+                  <p className="validator-hint col-span-2 text-red-500">
+                    {priceValidation}
                   </p>
                 </div>
               </fieldset>
               <div className="grid grid-cols-2 gap-4">
                 <fieldset className="fieldset">
                   <legend className="fieldset-legend">
-                    Pick a Category for the Product
+                    What category best describes the product you want?
                   </legend>
                   <select
                     defaultValue={formData.category || "Pick a Category"}
