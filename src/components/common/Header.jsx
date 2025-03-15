@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Header = () => {
+  const savedIsChecked = localStorage.getItem("darkModeOn");
+  const [darkModeOn, setDarkModeOn] = useState(
+    savedIsChecked !== null ? JSON.parse(savedIsChecked) : false
+  );
   const [theme, setTheme] = useState("night");
+
+  // Update local storage when darkModeOn changes
+  useEffect(() => {
+    localStorage.setItem("darkModeOn", JSON.stringify(darkModeOn));
+  }, [darkModeOn]);
 
   return (
     <div className="navbar bg-neutral shadow-sm flex gap-2 px-10 py-5">
       {/* Logo */}
       <div className="w-1/5">
-        <a className="text-xl text-white font-bold">Shop Smart</a>
+        <a href="/" className="text-xl text-white font-bold">
+          Shop Smart
+        </a>
       </div>
 
       {/* Search Box */}
@@ -47,7 +58,11 @@ const Header = () => {
             <input
               type="checkbox"
               value={theme}
-              onChange={(e) => setTheme(e.target.value)}
+              checked={darkModeOn}
+              onChange={(e) => {
+                setDarkModeOn(!darkModeOn);
+                setTheme(e.target.value);
+              }}
               className="theme-controller"
             />
 
