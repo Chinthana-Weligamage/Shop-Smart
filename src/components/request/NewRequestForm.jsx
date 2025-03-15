@@ -5,6 +5,8 @@ import {
   ProduuctCategories,
   Conditions,
 } from "../../reference/RequestFormConsts";
+import { setToken } from "../../redux/userSlice";
+import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
 const NewRequestForm = () => {
@@ -18,6 +20,7 @@ const NewRequestForm = () => {
     description: "",
     imageUrl: "",
   };
+  const dispatch = useDispatch();
   const [image, setImage] = useState(null);
   const [formData, setFormData] = useState(initialFormStructure);
 
@@ -39,12 +42,14 @@ const NewRequestForm = () => {
     setImage(null);
     event.target.reset();
 
+    dispatch(setToken(formData));
+
     Swal.fire({
       title: "Success!",
       text: "Your request has been submitted successfully.",
       icon: "success",
     }).then(() => {
-      window.location.href = "/";
+      // window.location.href = "/";
     });
   };
 
