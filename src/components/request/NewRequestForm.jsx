@@ -1,26 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Section from "../Section";
 import {
   ImportCountries,
   ProduuctCategories,
   Conditions,
 } from "../../reference/RequestFormConsts";
-import { setToken } from "../../redux/userSlice";
-import { useDispatch } from "react-redux";
+import { getCurrentLoggedinUser } from "../../appwrite/auth";
 import Swal from "sweetalert2";
+import { createProductRequest } from "../../appwrite/database";
 
 const NewRequestForm = () => {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await getCurrentLoggedinUser();
+      setCurrentUser(response);
+    };
+    getUser();
+  }, []);
+
   const initialFormStructure = {
-    name: "",
-    minPrice: 0,
-    maxPrice: 0,
+    creatorId: "",
+    productName: "",
+    minPrice: 0.0,
+    maxPrice: 0.0,
     category: "",
     condition: "",
     importCountry: "",
     description: "",
-    imageUrl: "",
+    imageUrl:
+      "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
   };
-  const dispatch = useDispatch();
+
   const [image, setImage] = useState(null);
   const [formData, setFormData] = useState(initialFormStructure);
 
@@ -35,22 +47,51 @@ const NewRequestForm = () => {
     }
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
-    setFormData(initialFormStructure);
-    setImage(null);
-    event.target.reset();
 
-    dispatch(setToken(formData));
+    formData.minPrice = parseInt(formData.minPrice);
+    formData.maxPrice = parseInt(formData.maxPrice);
 
-    Swal.fire({
-      title: "Success!",
-      text: "Your request has been submitted successfully.",
-      icon: "success",
-    }).then(() => {
-      // window.location.href = "/";
-    });
+    try {
+      if (
+        formData.productName === "" ||
+        formData.minPrice <= 0 ||
+        formData.maxPrice <= 0
+      ) {
+        throw new Error("Please fill in all the required fields.");
+      }
+
+      if (formData.userId === "") {
+        throw new Error("Your Login has been expired. Please login again.");
+      }
+
+      console.log(formData);
+
+      const response = await createProductRequest(formData);
+
+      if (response.$id === "") {
+        throw new Error("Failed to create request.");
+      } else {
+        setFormData(initialFormStructure);
+        setImage(null);
+        event.target.reset();
+
+        Swal.fire({
+          title: "Success!",
+          text: "Your request has been submitted successfully.",
+          icon: "success",
+        }).then(() => {
+          window.location.href = "/";
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+      });
+    }
   };
 
   const [priceValidation, setPriceValidation] = useState(
@@ -71,6 +112,12 @@ const NewRequestForm = () => {
     }
   };
 
+  useEffect(() => {
+    if (currentUser) {
+      setFormData({ ...formData, creatorId: currentUser.$id });
+    }
+  }, [currentUser]);
+
   return (
     <Section bgColor="white">
       <form onSubmit={handleFormSubmit}>
@@ -88,14 +135,14 @@ const NewRequestForm = () => {
                 </legend>
                 <input
                   type="text"
-                  name="name"
+                  name="productName"
                   className="input w-full validator"
                   placeholder="Product name"
                   pattern="[A-Za-z][A-Za-z0-9\- ]*"
                   minLength="3"
                   maxLength="90"
                   required
-                  value={formData.name}
+                  value={formData.productName}
                   onChange={handleInputChange}
                 />
                 <p className="validator-hint">
@@ -224,7 +271,7 @@ const NewRequestForm = () => {
                     <img
                       src={image}
                       alt="Product Preview"
-                      className="max-w-full h-auto rounded-lg shadow-md"
+                      className="h-full w-full object-contain rounded-lg "
                       onClick={() => setImage(null)}
                     />
                   </div>

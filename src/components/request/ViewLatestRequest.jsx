@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Section from "../Section";
-import RequestCard from "../request/RequestCard";
+import RequestCard from "./RequestCard";
 
 const LatestRequest = () => {
   const [activeRequests, setActiveRequests] = useState(

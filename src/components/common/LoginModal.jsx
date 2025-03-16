@@ -6,7 +6,7 @@ import {
 } from "../../appwrite/auth";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
-import { setToken } from "../../redux/userSlice";
+import { setUser } from "../../redux/userSlice";
 
 const LoginModal = () => {
   const initialFormStructure = {
@@ -32,7 +32,7 @@ const LoginModal = () => {
       }
 
       const user = await getCurrentLoggedinUser();
-      dispatch(setToken(user));
+      dispatch(setUser(user));
 
       setFormData(initialFormStructure);
 

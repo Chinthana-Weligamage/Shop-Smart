@@ -3,6 +3,7 @@ import { getCurrentLoggedinUser } from "../appwrite/auth";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { Navigate } from "react-router-dom";
+import Loading from "./common/Loading";
 
 const Protector = ({ children }) => {
   const userToken = useSelector((state) => state.user.userToken);
@@ -43,7 +44,7 @@ const Protector = ({ children }) => {
   }, [isAuthenticated]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (!isAuthenticated) {
