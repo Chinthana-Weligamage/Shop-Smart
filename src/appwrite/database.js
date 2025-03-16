@@ -22,3 +22,16 @@ export function createProductRequest(data) {
     }
   );
 }
+
+export function getAllProductRequests() {
+  const promise = databases.listDocuments(DATABASE_ID, REQUEST_COLLECTION_ID);
+
+  return promise.then(
+    function (response) {
+      return response.documents; // Success
+    },
+    function (error) {
+      throw error; // Failure
+    }
+  );
+}

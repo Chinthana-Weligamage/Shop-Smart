@@ -11,6 +11,7 @@ import { createProductRequest } from "../../appwrite/database";
 
 const NewRequestForm = () => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -49,6 +50,7 @@ const NewRequestForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    setButtonDisabled(true);
 
     formData.minPrice = parseInt(formData.minPrice);
     formData.maxPrice = parseInt(formData.maxPrice);
@@ -91,6 +93,8 @@ const NewRequestForm = () => {
         text: error.message,
         icon: "error",
       });
+    } finally {
+      setButtonDisabled(false);
     }
   };
 
@@ -119,7 +123,7 @@ const NewRequestForm = () => {
   }, [currentUser]);
 
   return (
-    <Section bgColor="white">
+    <Section bgColor="base-100">
       <form onSubmit={handleFormSubmit}>
         <div className="bg-base-200 flex flex-col lg:flex-row rounded-xl">
           <div className="lg:w-1/2 p-8">
@@ -294,7 +298,12 @@ const NewRequestForm = () => {
             </div>
 
             <fieldset className="fieldset mt-8">
-              <button className="btn btn-primary" type="submit" name="submit">
+              <button
+                className="btn btn-primary"
+                type="submit"
+                name="submit"
+                disabled={buttonDisabled}
+              >
                 Place your Request
               </button>
             </fieldset>

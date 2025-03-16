@@ -1,22 +1,51 @@
 import React from "react";
+import RequestModal from "./RequestModal";
 
-const requestCard = ({ key, request }) => {
+const requestCard = ({ request }) => {
   return (
-    <div key={key} className="card bg-base-100 w-full shadow-sm">
+    <div className="card bg-base-200 w-full shadow-md relative">
       <figure>
         <img
-          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          alt="Shoes"
+          src={request.imageUrl}
+          alt="Product"
+          className="w-full h-48 object-cover"
         />
       </figure>
       <div className="card-body">
-        <h2 className="card-title">Card Title</h2>
-        <p>
-          A card component has a figure, a body part, and inside body there are
-          title and actions parts
-        </p>
-        <div className="card-actions justify-end">
-          <button className="btn btn-primary">Buy Now</button>
+        <h2 className="card-title text-lg font-semibold w-full flex gap-2 justify-between align-top">
+          {request.productName?.length > 50
+            ? request.productName.substring(0, 47) + "..."
+            : request.productName}
+        </h2>
+        <div className="badge badge-accent absolute top-2 right-2 text-xs">
+          From: {request.importCountry || "Any Country"}
+        </div>
+
+        <div className=" P-2">
+          <table className="w-full border-0">
+            <tbody>
+              <tr className="border-0">
+                <td className="border-0 pl-2">Condition:</td>
+                <td className="border-0 ">
+                  <span className="font-bold">
+                    {request.condition || "Any Condition"}
+                  </span>
+                </td>
+              </tr>
+              <tr className="border-0">
+                <td className="border-0 pl-2">Price Range:</td>
+                <td className="border-0 ">
+                  <span className="font-bold">
+                    {request.minPrice} - {request.maxPrice} USD
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="card-actions justify-between mt-4">
+          <RequestModal request={request} />
         </div>
       </div>
     </div>
