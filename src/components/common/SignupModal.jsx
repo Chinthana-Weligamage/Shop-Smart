@@ -1,42 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoIosClose } from "react-icons/io";
-import { loginUsingEmailAndPassword } from "../../appwrite/auth";
+import { createAccountUsingEmailAndPassword } from "../../appwrite/auth";
 import Swal from "sweetalert2";
 
-const LoginModal = () => {
+const SignupModal = () => {
   const initialFormStructure = {
+    userId: "",
+    username: "",
     email: "",
     password: "",
   };
 
   const [formData, setFormData] = useState(initialFormStructure);
 
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
-
     try {
-      const response = await loginUsingEmailAndPassword(
+      const response = createAccountUsingEmailAndPassword(
         formData.email,
-        formData.password
+        formData.password,
+        formData.username
       );
 
-      if (!response.$id) {
-        throw new Error("Failed to login.");
+      if (!response) {
+        throw new Error("Failed to create account.");
       }
 
       setFormData(initialFormStructure);
+      event.target.reset();
 
       Swal.fire({
         title: "Success!",
-        text: "Your login has been successful.",
+        text: "Your account has been created successfully.",
         icon: "success",
       }).then(() => {
-        window.location.assign("/account"); // More secure redirect
+        window.location.href = "#login";
       });
     } catch (error) {
       Swal.fire({
         title: "Error!",
-        text: error.message || "An unexpected error occurred.",
+        text: error.message,
         icon: "error",
       });
     }
@@ -48,24 +51,59 @@ const LoginModal = () => {
   };
   return (
     <>
-      <a href="#login" className="btn btn-sm rounded-full">
-        Login
-      </a>
-      <div className="modal" role="dialog" id="login">
+      <div className="modal" role="dialog" id="signup">
         <div className="modal-box p-10">
           <a href="" className="btn btn-circle absolute right-2 top-2">
             <IoIosClose />
           </a>
           <h3 className="text-lg font-bold text-center">
-            👋 Hello! Welcome back
+            👋 Hello! Welcome to Shop Smart
           </h3>
           <p className="py-4 text-center">
-            Login to unlock the full potential of Shop Smart! 😉
+            Create a account & Start Shopping Smart! 🚀
           </p>
           <form
-            className="flex flex-col gap-3 w-full p-5"
             onSubmit={handleFormSubmit}
+            className="flex flex-col gap-3 w-full p-5"
           >
+            <div>
+              <label className="input validator w-full">
+                <svg
+                  className="h-[1em] opacity-50"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <g
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    strokeWidth="2.5"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </g>
+                </svg>
+                <input
+                  type="input"
+                  required
+                  placeholder="Username"
+                  pattern="[A-Za-z][A-Za-z0-9\-]*"
+                  minLength="3"
+                  maxLength="30"
+                  title="Only letters, numbers or dash"
+                  name="username"
+                  onChange={handleInputChange}
+                  value={formData.username}
+                />
+              </label>
+              <p className="validator-hint hidden">
+                Must be 3 to 30 characters
+                <br />
+                containing only letters, numbers or dash
+              </p>
+            </div>
+
             <div>
               <label className="input validator w-full">
                 <svg
@@ -97,6 +135,7 @@ const LoginModal = () => {
                 Enter valid email address
               </div>
             </div>
+
             <div>
               <label className="input validator w-full">
                 <svg
@@ -124,16 +163,28 @@ const LoginModal = () => {
                   type="password"
                   required
                   placeholder="Password"
+                  minLength="8"
+                  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                  title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
                   name="password"
                   onChange={handleInputChange}
                   value={formData.password}
                 />
               </label>
+              <p className="validator-hint hidden">
+                Must be more than 8 characters, including
+                <br />
+                At least one number
+                <br />
+                At least one lowercase letter
+                <br />
+                At least one uppercase letter
+              </p>
             </div>
 
             <div className="mt-5">
               <button type="submit" className="btn btn-primary btn-block">
-                Login
+                Create Account
               </button>
             </div>
 
@@ -175,17 +226,9 @@ const LoginModal = () => {
 
             <div>
               <p className="text-center">
-                Don't have an account?{" "}
-                <a href="#signup" className="text-primary">
-                  Sign up here
-                </a>
-              </p>
-            </div>
-
-            <div>
-              <p className="text-center">
-                <a href="" className="text-primary">
-                  Forgot password?
+                Already have an account?{" "}
+                <a href="#login" className="text-primary">
+                  Login here
                 </a>
               </p>
             </div>
@@ -196,4 +239,4 @@ const LoginModal = () => {
   );
 };
 
-export default LoginModal;
+export default SignupModal;
