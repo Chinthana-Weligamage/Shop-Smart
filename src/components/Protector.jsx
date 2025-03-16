@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { getCurrentLoggedinUser } from "../appwrite/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../redux/userSlice";
 
 const Protector = ({ children, roles = ["anyone"] }) => {
-  const [currentLoggedinUser, setCurrentLoggedinUser] = useState(null);
+  const [currentLoggedinUser, setCurrentLoggedinUser] = useState(
+    useSelector((state) => state.user.user) || {}
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

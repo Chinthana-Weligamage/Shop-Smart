@@ -39,6 +39,6 @@ export function getCurrentLoggedinUser() {
   );
 }
 
-export function logout() {
-  account.deleteSession("current");
+export function logoutCurrentUser() {
+  return account.deleteSession("current");
 }

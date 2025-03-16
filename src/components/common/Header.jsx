@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
+import LogoutModal from "./LogoutModal";
 
 const Header = () => {
   const savedIsChecked = localStorage.getItem("darkModeOn");
@@ -37,6 +38,7 @@ const Header = () => {
       <div className="navbar-end flex gap-2 w-1/5 ">
         <LoginModal />
         <SignupModal />
+        <LogoutModal />
         <button className="btn btn-ghost btn-circle">
           <div className="indicator">
             <svg
