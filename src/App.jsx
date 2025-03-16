@@ -5,6 +5,7 @@ import AllRequests from "./pages/AllRequests";
 import Instructions from "./pages/Instructions";
 import Support from "./pages/Support";
 import Fallback from "./pages/Fallback";
+import UserAccount from "./pages/UserAccount";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/all-requests" element={<AllRequests />} />
         <Route path="/instructions" element={<Instructions />} />
         <Route path="/support" element={<Support />} />
+        <Route path="/account" element={<UserAccount />} />
 
         <Route path="*" element={<Fallback />} />
       </Routes>

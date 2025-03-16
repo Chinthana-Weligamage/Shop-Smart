@@ -1,52 +1,56 @@
-import React, { use, useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { getCurrentLoggedinUser } from "../appwrite/auth";
-import { useDispatch, useSelector } from "react-redux";
-import { setToken } from "../redux/userSlice";
+import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { Navigate } from "react-router-dom";
 
-const Protector = ({ children, roles = ["anyone"] }) => {
+const Protector = ({ children }) => {
+  const userToken = useSelector((state) => state.user.userToken);
   const [currentLoggedinUser, setCurrentLoggedinUser] = useState(
-    useSelector((state) => state.user.user) || {}
+    userToken || {}
   );
   const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
     (async () => {
-      const response = await getCurrentLoggedinUser();
-      if (response?.$id) {
-        setCurrentLoggedinUser(response);
+      try {
+        const response = await getCurrentLoggedinUser();
+        if (response?.$id) {
+          setCurrentLoggedinUser(response);
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+      } catch (error) {
+        setIsAuthenticated(false);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     })();
   }, []);
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    if (currentLoggedinUser) {
-      dispatch(setToken(currentLoggedinUser));
+    if (isAuthenticated === false) {
+      Swal.fire({
+        title: "You are not logged in!",
+        text: "You must be logged in to continue Shopping Smart.",
+        icon: "info",
+      }).then(() => {
+        window.location.hash = "#login"; // Opens #login section
+      });
     }
-  }, [currentLoggedinUser, dispatch]);
+  }, [isAuthenticated]);
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
 
-  if (roles.includes("anyone")) {
-    return children;
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
   }
 
-  if (!currentLoggedinUser) {
-    return <Navigate to="#login" />;
-  }
-
-  const userRoles = currentLoggedinUser.roles || [];
-  const hasAccess = roles.some((role) => userRoles.includes(role));
-
-  if (!hasAccess) {
-    return <p>Access Denied. You do not have the required permissions.</p>;
-  }
-
+  console.log("Access Granted. User ID:", currentLoggedinUser.$id);
   return children;
 };
 

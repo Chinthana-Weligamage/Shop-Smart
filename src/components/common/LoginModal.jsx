@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { IoIosClose } from "react-icons/io";
-import { loginUsingEmailAndPassword } from "../../appwrite/auth";
+import {
+  getCurrentLoggedinUser,
+  loginUsingEmailAndPassword,
+} from "../../appwrite/auth";
 import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../redux/userSlice";
 
 const LoginModal = () => {
   const initialFormStructure = {
@@ -10,6 +15,8 @@ const LoginModal = () => {
   };
 
   const [formData, setFormData] = useState(initialFormStructure);
+
+  const dispatch = useDispatch();
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -23,6 +30,9 @@ const LoginModal = () => {
       if (!response.$id) {
         throw new Error("Failed to login.");
       }
+
+      const user = await getCurrentLoggedinUser();
+      dispatch(setToken(user));
 
       setFormData(initialFormStructure);
 
