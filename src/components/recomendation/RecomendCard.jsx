@@ -1,7 +1,6 @@
 import React from "react";
 
 const RecomendCard = ({ index, item }) => {
-  // Define a grid layout mapping based on index
   const gridClasses = [
     "col-span-2 row-span-1", // index 0
     "col-span-1 row-span-2", // index 1
@@ -11,6 +10,10 @@ const RecomendCard = ({ index, item }) => {
 
   const randomGridClasses = [...gridClasses].sort(() => 0.5 - Math.random());
 
+  const handleNavigate = () => {
+    window.location.assign("/new-request/" + item.id);
+  };
+
   return (
     <div
       className={`card bg-base-100 image-full shadow-sm w-full ${
@@ -18,20 +21,28 @@ const RecomendCard = ({ index, item }) => {
       }`}
     >
       <figure>
-        <img
-          // src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          src={item.imageUrl}
-          alt="Shoes"
-        />
+        <img src={item.imageUrl} alt={item.title} />
       </figure>
       <div className="card-body">
         <h2 className="card-title">{item.title}</h2>
         <p>
-          A card component has a figure, a body part, and inside body there are
-          title and actions parts
+          {item.description.length > 100
+            ? item.description.substring(0, 97) + "..."
+            : item.description}
         </p>
-        <div className="card-actions justify-end">
-          <button className="btn btn-primary">Buy Now</button>
+        <div className="card-actions justify-between">
+          <div className="flex flex-row h-full items-end gap-1">
+            <div className="badge badge-secondary">{item.category}</div>
+            <div className="badge badge-soft badge-accent font-semibold w-full">
+              {item.price}
+            </div>
+          </div>
+          <button
+            className="btn btn-primary text-white font-semibold "
+            onClick={handleNavigate}
+          >
+            Create Request
+          </button>
         </div>
       </div>
     </div>

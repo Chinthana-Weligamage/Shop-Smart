@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
 
-        <Route path="/new-request" element={<NewRequest />} />
+        <Route path="/new-request/*" element={<NewRequest />} />
         <Route path="/all-requests" element={<AllRequests />} />
         <Route path="/instructions" element={<Instructions />} />
         <Route path="/support" element={<Support />} />

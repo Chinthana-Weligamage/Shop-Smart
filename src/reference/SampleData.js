@@ -1,11 +1,11 @@
-[
+export const SampleSugestions = [
   {
     id: 1,
     title: "Apple iPhone 15 Pro",
     description: "Latest iPhone with A17 Pro chip and titanium frame.",
     country: "USA",
     price: "$999",
-    category: "Smartphones",
+    category: "Phones",
     ImageUrl: "https://example.com/iphone15pro.jpg",
   },
   {
@@ -14,7 +14,7 @@
     description: "Flagship Android phone with S Pen and 200MP camera.",
     country: "South Korea",
     price: "$1199",
-    category: "Smartphones",
+    category: "Phones",
     ImageUrl: "https://example.com/galaxys24ultra.jpg",
   },
   {
