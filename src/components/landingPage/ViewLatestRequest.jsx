@@ -9,7 +9,7 @@ const LatestRequest = () => {
   return (
     <Section>
       <h2 className="text-2xl font-bold w-full text-center">Latest Requests</h2>
-      <div className="grid grid-cols-4 gap-8 p-16">
+      <div className="grid grid-cols-4 gap-10 p-10">
         {activeRequests.map((request, index) => (
           <RequestCard key={index} request={request} />
         ))}
