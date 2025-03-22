@@ -126,14 +126,14 @@ const NewOrderForm = () => {
   return (
     <Section bgColor="base-100">
       <form onSubmit={handleFormSubmit}>
-        <div className="bg-base-200 flex flex-col lg:flex-row rounded-xl">
+        <div className="bg-blue-200 flex flex-col lg:flex-row rounded-xl">
           <div className="lg:w-1/2 p-8">
             <h1 className="text-2xl font-bold">Create New Order</h1>
             <p className="text-sm font-semibold my-2">
               Create an order for the offer: {offerId.toUpperCase()}
             </p>
             <div className="flex flex-col gap-1 mt-5">
-              <fieldset className="fieldset flex flex-col bg-base-200 border border-base-300 p-2 h-full rounded-lg flex-1/2">
+              <fieldset className="fieldset flex flex-col bg-blue-300 border border-base-300 p-2 h-full rounded-lg flex-1/2">
                 <legend className="fieldset-legend">
                   Add a photo of the purchase receipt
                 </legend>
