@@ -66,7 +66,7 @@ const RequestModal = ({ request }) => {
             <button
               onClick={() => {
                 document.getElementById(`${request.$id}`).close();
-                window.location.href = `/request/${request.$id}`;
+                window.location.href = `/new-offer/${request.$id}`;
               }}
               className="btn btn-primary btn-block"
             >

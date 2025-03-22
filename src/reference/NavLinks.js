@@ -4,6 +4,10 @@ const NavLinks = [
     url: "/new-request",
   },
   {
+    title: "New Order",
+    url: "/new-order",
+  },
+  {
     title: "View All Requests",
     url: "/all-requests",
   },
