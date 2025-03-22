@@ -9,9 +9,9 @@ const ProductSuggest = () => {
   return (
     <Section bgColor="base-100">
       <h2 className="text-2xl font-bold w-full text-center my-5">
-        Latest Requests
+        Best Deals for Trending Products
       </h2>
-      <div className="w-full bg-base-200 grid gap-3 p-5 grid-cols-9 grid-rows-9 max-h-[calc(100vh*3)]">
+      <div className="w-full bg-base-200 grid gap-3 p-5 grid-cols-10 grid-rows-10 max-h-[calc(100vh*3)]">
         {SampleData.map((item, index) => (
           <RecomendCard key={item.id} index={index} item={item} />
         ))}

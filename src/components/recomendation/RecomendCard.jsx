@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 
 const RecomendCard = ({ index, item }) => {
   const gridClasses = [
-    "col-span-3 row-span-1 h-[calc(300vh/12)]",
-    "col-span-2 row-span-2 h-[calc(300vh/6)]",
-    "col-span-3 row-span-2 h-[calc(300vh/6)]",
-    "col-span-2 row-span-1 h-[calc(300vh/12)]",
+    "col-span-3 row-span-1",
+    "col-span-2 row-span-2",
+    "col-span-3 row-span-2",
+    "col-span-2 row-span-1",
   ];
 
   const randomGridClasses = [...gridClasses].sort(() => 0.5 - Math.random());
@@ -35,10 +35,14 @@ const RecomendCard = ({ index, item }) => {
           </div>
         </div>
         <div className=" flex flex-col flex-1">
-          <h2 className="card-title">{item.title}</h2>
+          <h3 className="card-title">
+            {item.title.length > 30
+              ? item.title.substring(0, 27) + "..."
+              : item.title}
+          </h3>
           <p className="text-sm">
-            {item.description.length > 100
-              ? item.description.substring(0, 97) + "..."
+            {item.description.length > 40
+              ? item.description.substring(0, 37) + "..."
               : item.description}
           </p>
         </div>
