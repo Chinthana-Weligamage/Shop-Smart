@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import { createProductRequest } from "../../appwrite/database";
 
 const NewOrderForm = () => {
-  const offerId = window.location.pathname.split("/").pop();
+  const orderId = window.location.pathname.split("/").pop();
 
   const [currentUser, setCurrentUser] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -25,8 +25,8 @@ const NewOrderForm = () => {
 
   const initialFormStructure = {
     creatorId: "",
-    offerId: offerId,
-    orderTitle: `Order for ${offerId}`,
+    orderId: orderId,
+    orderTitle: `Order for ${orderId}`,
     orderValue: 0.0,
     estDelivery: "",
     description: "",
@@ -130,7 +130,7 @@ const NewOrderForm = () => {
           <div className="lg:w-1/2 p-8">
             <h1 className="text-2xl font-bold">Create New Order</h1>
             <p className="text-sm font-semibold my-2">
-              Create an order for the offer: {offerId.toUpperCase()}
+              Create an order for the order: {orderId.toUpperCase()}
             </p>
             <div className="flex flex-col gap-1 mt-5">
               <fieldset className="fieldset flex flex-col bg-blue-200 border border-base-300 p-2 h-full rounded-lg flex-1/2">
@@ -193,13 +193,13 @@ const NewOrderForm = () => {
               </legend>
               <textarea
                 type="text"
-                name="offerMsg"
-                placeholder="Offer Message"
+                name="orderMsg"
+                placeholder="Order Message"
                 pattern="[A-Za-z][A-Za-z0-9\-]*"
                 minLength="10"
                 maxLength="500"
                 className="textarea validator textarea-success flex-1 min-h-24 lg:min-h-24 w-full"
-                value={formData.offerMsg}
+                value={formData.orderMsg}
                 onChange={handleInputChange}
               ></textarea>
               <p className="validator-hint">
@@ -211,17 +211,17 @@ const NewOrderForm = () => {
             <div className="grid grid-cols-2 gap-4">
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">
-                  Your offer price in US Dollars? ($)
+                  Your order price in US Dollars? ($)
                 </legend>
                 <input
                   type="number"
-                  name="offerPrice"
+                  name="orderPrice"
                   className="input input-success validator w-full"
-                  placeholder="Offer Price"
+                  placeholder="Order Price"
                   pattern="[0-9]*"
                   min={10}
                   required
-                  value={formData.offerPrice > 0 ? formData.offerPrice : ""}
+                  value={formData.orderPrice > 0 ? formData.orderPrice : ""}
                   onChange={handleInputChange}
                 />
                 <p className="validator-hint col-span-2 text-red-500">
