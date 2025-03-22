@@ -125,7 +125,7 @@ const NewRequestForm = () => {
   return (
     <Section bgColor="base-100">
       <form onSubmit={handleFormSubmit}>
-        <div className="bg-base-200 flex flex-col lg:flex-row rounded-xl">
+        <div className="bg-purple-100 flex flex-col lg:flex-row rounded-xl">
           <div className="lg:w-1/2 p-8">
             <h1 className="text-2xl font-bold">Create New Request</h1>
             <p className="text-sm font-semibold mt-2">
@@ -245,7 +245,7 @@ const NewRequestForm = () => {
               </select>
             </fieldset>
             <div className="flex flex-col lg:flex-row gap-2">
-              <fieldset className="fieldset bg-base-200 border border-base-300 p-2 rounded-lg flex-1/2 flex flex-col ">
+              <fieldset className="fieldset bg-purple-100 border border-base-300 p-2 rounded-lg flex-1/2 flex flex-col ">
                 <legend className="fieldset-legend">
                   List all specifications of the product you want
                 </legend>
@@ -265,13 +265,13 @@ const NewRequestForm = () => {
                   numbers or dash
                 </p>
               </fieldset>
-              <fieldset className="fieldset flex flex-col bg-base-200 border border-base-300 p-2 rounded-lg flex-1/2">
+              <fieldset className="fieldset flex flex-col bg-purple-100 border border-base-300 p-2 rounded-lg flex-1/2">
                 <legend className="fieldset-legend">
                   Add a clear and descriptive picture of the product
                 </legend>
 
                 {image ? (
-                  <div className="p-3 border-2 h-48 border-dashed border-primary rounded-lg bg-base-100 flex flex-col items-center justify-center text-gray-400">
+                  <div className="p-3 border-2 h-48 border-dashed border-primary rounded-lg bg-purple-100 flex flex-col items-center justify-center text-gray-400">
                     <img
                       src={image}
                       alt="Product Preview"

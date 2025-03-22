@@ -115,7 +115,7 @@ const NewOfferForm = () => {
   return (
     <Section bgColor="base-100">
       <form onSubmit={handleFormSubmit}>
-        <div className="bg-base-200 flex flex-col lg:flex-row rounded-xl">
+        <div className="bg-green-200 flex flex-col lg:flex-row rounded-xl">
           <div className="lg:w-1/2 p-8">
             <h1 className="text-2xl font-bold">Create New Offer</h1>
             <p className="text-sm font-semibold my-2">
@@ -249,7 +249,7 @@ const NewOfferForm = () => {
                   </p>
                 </fieldset>
               </div>
-              <fieldset className="fieldset flex flex-col bg-base-200 border border-base-300 p-2 rounded-lg flex-1/2">
+              <fieldset className="fieldset flex flex-col bg-green-200 border border-base-300 p-2 rounded-lg flex-1/2">
                 <legend className="fieldset-legend">
                   Add photo of the product you offer
                 </legend>
@@ -282,7 +282,7 @@ const NewOfferForm = () => {
             </div>
             <fieldset className="fieldset mt-8">
               <button
-                className="btn btn-primary"
+                className="btn btn-secondary"
                 type="submit"
                 name="submit"
                 disabled={buttonDisabled}

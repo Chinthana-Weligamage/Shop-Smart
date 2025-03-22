@@ -133,7 +133,7 @@ const NewOrderForm = () => {
               Create an order for the offer: {offerId.toUpperCase()}
             </p>
             <div className="flex flex-col gap-1 mt-5">
-              <fieldset className="fieldset flex flex-col bg-blue-300 border border-base-300 p-2 h-full rounded-lg flex-1/2">
+              <fieldset className="fieldset flex flex-col bg-blue-200 border border-base-300 p-2 h-full rounded-lg flex-1/2">
                 <legend className="fieldset-legend">
                   Add a photo of the purchase receipt
                 </legend>
