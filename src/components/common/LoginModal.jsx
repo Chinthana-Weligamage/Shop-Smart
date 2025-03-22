@@ -41,7 +41,7 @@ const LoginModal = () => {
         text: "Your login has been successful.",
         icon: "success",
       }).then(() => {
-        window.location.assign("/account"); // More secure redirect
+        window.location.assign("/"); // More secure redirect
       });
     } catch (error) {
       Swal.fire({
