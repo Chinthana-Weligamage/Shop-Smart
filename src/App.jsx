@@ -6,6 +6,8 @@ import Instructions from "./pages/Instructions";
 import Support from "./pages/Support";
 import Fallback from "./pages/Fallback";
 import UserAccount from "./pages/UserAccount";
+import NewOffer from "./pages/NewOffer";
+import NewOrder from "./pages/NewOrder";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/instructions" element={<Instructions />} />
         <Route path="/support" element={<Support />} />
         <Route path="/account" element={<UserAccount />} />
+        <Route path="/new-offer/*" element={<NewOffer />} />
+        <Route path="/new-order/*" element={<NewOrder />} />
 
         <Route path="*" element={<Fallback />} />
       </Routes>

@@ -30,7 +30,7 @@ To install and run Shop-Smart locally, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/shop-smart.git
+   git clone https://gitea.creadew.vip/Chinthana-Weligamage/Shop-Smart.git
    ```
 2. Navigate to the project directory:
    ```bash
@@ -42,7 +42,7 @@ To install and run Shop-Smart locally, follow these steps:
    ```
 4. Start the application:
    ```bash
-   npm start
+   npm run dev
    ```
 
 ## Usage
