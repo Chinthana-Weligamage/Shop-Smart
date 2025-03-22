@@ -1,11 +1,12 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const RecomendCard = ({ index, item }) => {
   const gridClasses = [
-    "col-span-2 row-span-1", // index 0
-    "col-span-1 row-span-2", // index 1
-    "col-span-2 row-span-2", // index 2
-    "col-span-1 row-span-1", // index 3
+    "col-span-3 row-span-1 h-[calc(300vh/12)]",
+    "col-span-2 row-span-2 h-[calc(300vh/6)]",
+    "col-span-3 row-span-2 h-[calc(300vh/6)]",
+    "col-span-2 row-span-1 h-[calc(300vh/12)]",
   ];
 
   const randomGridClasses = [...gridClasses].sort(() => 0.5 - Math.random());
@@ -15,37 +16,43 @@ const RecomendCard = ({ index, item }) => {
   };
 
   return (
-    <div
-      className={`card bg-base-100 image-full shadow-sm w-full ${
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, delay: Math.random() * 1.5 }}
+      className={`card bg-blue-100 image-full shadow-sm w-full  bg-cover ${
         randomGridClasses[index % randomGridClasses.length]
       }`}
     >
-      <figure>
-        <img src={item.imageUrl} alt={item.title} />
+      <figure className="bg-red-500">
+        <img src={item.imageUrl} alt={item.title} className="w-full h-full" />
       </figure>
       <div className="card-body">
-        <h2 className="card-title">{item.title}</h2>
-        <p>
-          {item.description.length > 100
-            ? item.description.substring(0, 97) + "..."
-            : item.description}
-        </p>
-        <div className="card-actions justify-between">
-          <div className="flex flex-row h-full items-end gap-1">
-            <div className="badge badge-secondary">{item.category}</div>
-            <div className="badge badge-soft badge-accent font-semibold w-full">
-              {item.price}
-            </div>
+        <div className="flex flex-row items-start gap-1">
+          <div className="badge badge-secondary max-w-fit">{item.category}</div>
+          <div className="badge badge-soft badge-accent font-semibold  max-w-fit">
+            {item.price}
           </div>
+        </div>
+        <div className=" flex flex-col flex-1">
+          <h2 className="card-title">{item.title}</h2>
+          <p className="text-sm">
+            {item.description.length > 100
+              ? item.description.substring(0, 97) + "..."
+              : item.description}
+          </p>
+        </div>
+
+        <div className="card-actions justify-end">
           <button
-            className="btn btn-primary text-white font-semibold "
+            className="btn btn-primary text-white font-semibold"
             onClick={handleNavigate}
           >
             Create Request
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
