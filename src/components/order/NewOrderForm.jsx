@@ -7,10 +7,10 @@ import {
 } from "../../reference/RequestFormConsts";
 import { getCurrentLoggedinUser } from "../../appwrite/auth";
 import Swal from "sweetalert2";
-import { createProductRequest } from "../../appwrite/database";
+import { createOrder } from "../../appwrite/database";
 
 const NewOrderForm = () => {
-  const orderId = window.location.pathname.split("/").pop();
+  const offerId = window.location.pathname.split("/").pop();
 
   const [currentUser, setCurrentUser] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -25,12 +25,12 @@ const NewOrderForm = () => {
 
   const initialFormStructure = {
     creatorId: "",
-    orderId: orderId,
-    orderTitle: `Order for ${orderId}`,
+    offers: offerId,
+    orderTitle: "",
     orderValue: 0.0,
     estDelivery: "",
-    description: "",
-    status: "",
+    orderMsg: "",
+    status: "In Progress",
     orderImageUrl:
       "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
   };
@@ -53,8 +53,7 @@ const NewOrderForm = () => {
     event.preventDefault();
     setButtonDisabled(true);
 
-    formData.minPrice = parseInt(formData.minPrice);
-    formData.maxPrice = parseInt(formData.maxPrice);
+    formData.orderValue = parseInt(formData.orderValue);
 
     try {
       if (
@@ -71,7 +70,7 @@ const NewOrderForm = () => {
 
       console.log(formData);
 
-      const response = await createProductRequest(formData);
+      const response = await createOrder(formData);
 
       if (response.$id === "") {
         throw new Error("Failed to create request.");
@@ -130,7 +129,7 @@ const NewOrderForm = () => {
           <div className="lg:w-1/2 p-8">
             <h1 className="text-2xl font-bold">Create New Order</h1>
             <p className="text-sm font-semibold my-2">
-              Create an order for the order: {orderId.toUpperCase()}
+              Create an order for the order: {offerId.toUpperCase()}
             </p>
             <div className="flex flex-col gap-1 mt-5">
               <fieldset className="fieldset flex flex-col bg-blue-200 border border-base-300 p-2 h-full rounded-lg flex-1/2">
@@ -174,14 +173,20 @@ const NewOrderForm = () => {
                 type="text"
                 name="orderTitle"
                 className="input input-success w-full validator"
-                placeholder="Order title"
+                placeholder={`Order for ${offerId}`}
                 pattern="[A-Za-z][A-Za-z0-9\- ]*"
                 minLength="3"
                 maxLength="90"
                 required
                 value={formData.orderTitle}
                 onChange={handleInputChange}
+                list="order-title-suggestions"
               />
+              <datalist id="order-title-suggestions">
+                {formData.orderTitle.length > -1 && (
+                  <option value={offerId}>Click here to Insert Offer ID</option>
+                )}
+              </datalist>
               <p className="validator-hint">
                 Must be 3 to 90 characters containing only letters, numbers or
                 dash
@@ -215,13 +220,13 @@ const NewOrderForm = () => {
                 </legend>
                 <input
                   type="number"
-                  name="orderPrice"
+                  name="orderValue"
                   className="input input-success validator w-full"
                   placeholder="Order Price"
                   pattern="[0-9]*"
                   min={10}
                   required
-                  value={formData.orderPrice > 0 ? formData.orderPrice : ""}
+                  value={formData.orderValue > 0 ? formData.orderValue : ""}
                   onChange={handleInputChange}
                 />
                 <p className="validator-hint col-span-2 text-red-500">
@@ -241,6 +246,13 @@ const NewOrderForm = () => {
                   required
                   value={formData.estDelivery}
                   onChange={handleInputChange}
+                  onKeyDown={(event) => {
+                    if (event.key === "t" || event.key === "T") {
+                      event.preventDefault();
+                      const todayDate = new Date().toISOString().split("T")[0];
+                      setFormData({ ...formData, estDelivery: todayDate });
+                    }
+                  }}
                 />
                 <p className="validator-hint col-span-2 text-red-500">
                   {formData.estDelivery === "" && (

@@ -2,6 +2,7 @@ import React from "react";
 import Protector from "../components/Protector";
 import Layout from "../components/Layout";
 import OffersTable from "../components/offer/OffersTable";
+import Section from "../components/Section";
 
 const AllOffers = () => {
   const sampleData = [
@@ -31,7 +32,7 @@ const AllOffers = () => {
     },
   ];
 
-  sampleTravellers = [
+  const sampleTravellers = [
     {
       id: "001",
       name: "Hart Hagerty",
@@ -56,7 +57,18 @@ const AllOffers = () => {
   return (
     <Protector>
       <Layout>
-        <OffersTable offerData={sampleData} refresh={refresh} />
+        <Section bgColor="base-200">
+          <h2 className="text-2xl font-bold w-full text-center my-3">
+            All Offers
+          </h2>
+          <div className="w-full">
+            <OffersTable
+              offerData={sampleData}
+              travellerData={sampleTravellers}
+              refresh={refresh}
+            />
+          </div>
+        </Section>
       </Layout>
     </Protector>
   );

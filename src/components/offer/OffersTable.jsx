@@ -1,8 +1,8 @@
 import React from "react";
 
-const OffersTable = ({ offerData, refresh }) => {
+const OffersTable = ({ offerData, travellerData, refresh }) => {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto bg-white p-3 rounded-xl shadow-sm">
       <table className="table">
         {/* head */}
         <thead>

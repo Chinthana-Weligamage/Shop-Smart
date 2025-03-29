@@ -7,12 +7,10 @@ import {
 } from "../../reference/RequestFormConsts";
 import { getCurrentLoggedinUser } from "../../appwrite/auth";
 import Swal from "sweetalert2";
-import { createProductRequest } from "../../appwrite/database";
+import { createOffer } from "../../appwrite/database";
 
 const NewOfferForm = () => {
   const requestId = window.location.pathname.split("/").pop();
-  console.log(requestId);
-
   const [currentUser, setCurrentUser] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
@@ -26,13 +24,14 @@ const NewOfferForm = () => {
 
   const initialFormStructure = {
     creatorId: "",
-    requestId: requestId,
+    productRequests: requestId,
     offerTitle: "",
     offerPrice: 0.0,
     estDelivery: "",
     offerMsg: "",
     condition: "",
     importCountry: "",
+    offerStatus: "Pending",
     offerImageUrl:
       "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
   };
@@ -55,8 +54,7 @@ const NewOfferForm = () => {
     event.preventDefault();
     setButtonDisabled(true);
 
-    formData.minPrice = parseInt(formData.minPrice);
-    formData.maxPrice = parseInt(formData.maxPrice);
+    formData.offerPrice = parseInt(formData.offerPrice);
 
     try {
       if (
@@ -73,7 +71,7 @@ const NewOfferForm = () => {
 
       console.log(formData);
 
-      const response = await createProductRequest(formData);
+      const response = await createOffer(formData);
 
       if (response.$id === "") {
         throw new Error("Failed to create request.");
@@ -220,6 +218,15 @@ const NewOfferForm = () => {
                     required
                     value={formData.estDelivery}
                     onChange={handleInputChange}
+                    onKeyDown={(event) => {
+                      if (event.key === "t" || event.key === "T") {
+                        event.preventDefault();
+                        const todayDate = new Date()
+                          .toISOString()
+                          .split("T")[0];
+                        setFormData({ ...formData, estDelivery: todayDate });
+                      }
+                    }}
                   />
                   <p className="validator-hint col-span-2 text-red-500">
                     {formData.estDelivery === "" && (
