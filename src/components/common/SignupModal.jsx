@@ -125,6 +125,7 @@ const SignupModal = () => {
                 <input
                   name="email"
                   onChange={handleInputChange}
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   value={formData.email}
                   type="email"
                   placeholder="mail@site.com"
@@ -171,14 +172,31 @@ const SignupModal = () => {
                   value={formData.password}
                 />
               </label>
-              <p className="validator-hint hidden">
-                Must be more than 8 characters, including
-                <br />
-                At least one number
-                <br />
-                At least one lowercase letter
-                <br />
-                At least one uppercase letter
+              <p className="validator-hint">
+                {formData.password.length < 8 && (
+                  <>
+                    Password must be more than 8 characters
+                    <br />
+                  </>
+                )}
+                {formData.password.search(/[a-z]/) === -1 && (
+                  <>
+                    Password must contain at least one lowercase letter
+                    <br />
+                  </>
+                )}
+                {formData.password.search(/[A-Z]/) === -1 && (
+                  <>
+                    Password must contain at least one uppercase letter
+                    <br />
+                  </>
+                )}
+                {formData.password.search(/[0-9]/) === -1 && (
+                  <>
+                    Password must contain at least one number
+                    <br />
+                  </>
+                )}
               </p>
             </div>
 

@@ -2,8 +2,8 @@ import { client, account, ID, Databases } from "./config";
 
 const databases = new Databases(client);
 
-const DATABASE_ID = "67d6a409000b5b31f3cc";
-const REQUEST_COLLECTION_ID = "67d6a434000159c76b26";
+const DATABASE_ID = "67e789d60004075caeb8";
+const REQUEST_COLLECTION_ID = "67e789f5000c862e0b49";
 
 export function createProductRequest(data) {
   const promise = databases.createDocument(
