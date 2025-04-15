@@ -2,7 +2,11 @@ import React from "react";
 
 const Section = ({ children, bgColor = "base-100" }) => {
   return (
-    <div className={`h-1/5 px-10 w-full py-10 bg-${bgColor} `}>{children}</div>
+    <div
+      className={`min-h-screen w-full flex flex-col items-center justify-center bg-${bgColor} `}
+    >
+      {children}
+    </div>
   );
 };
 

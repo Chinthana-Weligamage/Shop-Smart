@@ -27,12 +27,6 @@ const AllRequests = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    if (allProductRequests?.length > 0) {
-      console.log(allProductRequests);
-    }
-  }, [allProductRequests]);
-
   if (isLoading) {
     return <Loading />;
   }

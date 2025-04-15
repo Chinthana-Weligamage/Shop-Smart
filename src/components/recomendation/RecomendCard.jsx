@@ -1,16 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-const RecomendCard = ({ index, item }) => {
-  const gridClasses = [
-    "col-span-3 row-span-1",
-    "col-span-2 row-span-2",
-    "col-span-3 row-span-2",
-    "col-span-2 row-span-1",
-  ];
-
-  const randomGridClasses = [...gridClasses].sort(() => 0.5 - Math.random());
-
+const RecomendCard = ({ index, item, randomClass }) => {
   const handleNavigate = () => {
     window.location.assign("/new-request/" + item.id);
   };
@@ -19,15 +10,18 @@ const RecomendCard = ({ index, item }) => {
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, delay: Math.random() * 1.5 }}
-      className={`card bg-blue-100 image-full shadow-sm w-full  bg-cover ${
-        randomGridClasses[index % randomGridClasses.length]
-      }`}
+      transition={{ duration: 0.8, delay: Math.random() * 1.5 }}
+      className={`card rounded-xl bg-blue-100 shadow-sm lg:min-h-80 ${randomClass}`}
+      style={{
+        backgroundImage: `url(${item.imageUrl})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundColor: "rgba(0,0,0,0.5)",
+        backgroundBlendMode: "multiply",
+      }}
     >
-      <figure className="bg-red-500">
-        <img src={item.imageUrl} alt={item.title} className="w-full h-full" />
-      </figure>
-      <div className="card-body">
+      <div className="card-body text-white flex flex-col justify-between">
         <div className="flex flex-row items-start gap-1">
           <div className="badge badge-secondary max-w-fit">{item.category}</div>
           <div className="badge badge-soft badge-accent font-semibold  max-w-fit">
