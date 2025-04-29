@@ -11,6 +11,7 @@ import NewOrder from "./pages/NewOrder";
 import AllOffers from "./pages/AllOffers";
 import SentOffers from "./pages/SentOffers";
 import ReceivedOffers from "./pages/ReceivedOffers";
+import MyOrders from "./pages/MyOrders";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/new-order/*" element={<NewOrder />} />
         <Route path="/sent-offers/*" element={<SentOffers />} />
         <Route path="/received-offers/*" element={<ReceivedOffers />} />
+        <Route path="/my-orders" element={<MyOrders />} />
 
         <Route path="*" element={<Fallback />} />
       </Routes>

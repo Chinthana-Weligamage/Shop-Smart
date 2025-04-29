@@ -115,12 +115,14 @@ export function getReceivedOffers(receiverId) {
   );
 }
 
-export function createOrder(data) {
-  const promise = databases.createDocument(
+export function updateOfferStatus(offerId, status) {
+  const promise = databases.updateDocument(
     DATABASE_ID,
-    ORDER_COLLECTION_ID,
-    ID.unique(),
-    data
+    OFFER_COLLECTION_ID,
+    offerId,
+    {
+      offerStatus: status,
+    }
   );
 
   return promise.then(
@@ -131,6 +133,35 @@ export function createOrder(data) {
       throw error; // Failure
     }
   );
+}
+
+export async function createOrder(data) {
+  try {
+    // Step 1: Create the Order
+    const response = await databases.createDocument(
+      DATABASE_ID,
+      ORDER_COLLECTION_ID,
+      ID.unique(),
+      data
+    );
+    console.log("Order created successfully:", response);
+
+    // Step 2: Update the Offer Status
+    const offerId = response.offers.$id;
+    if (!offerId) {
+      throw new Error("Offer ID is missing from order data.");
+    }
+
+    await databases.updateDocument(DATABASE_ID, OFFER_COLLECTION_ID, offerId, {
+      offerStatus: "Order Created",
+    });
+
+    // Step 3: Return the order creation response
+    return response;
+  } catch (error) {
+    console.error("Error in createOrder:", error);
+    throw error;
+  }
 }
 
 export function getAllOrders() {

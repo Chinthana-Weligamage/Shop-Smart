@@ -1,7 +1,7 @@
 import React, { useState, useEffect, use } from "react";
 import Protector from "../components/Protector";
 import Layout from "../components/Layout";
-import OffersTable from "../components/offer/OffersTable";
+import OrderTable from "../components/order/OrderTable";
 import Section from "../components/Section";
 import { getReceivedOffers, updateOfferStatus } from "../appwrite/database";
 import Loading from "../components/common/Loading";
@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import { FaCircleCheck } from "react-icons/fa6";
 import { MdCancel } from "react-icons/md";
 
-const ReceivedOffers = () => {
+const MyOrders = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [offerData, setOfferData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -156,8 +156,8 @@ const ReceivedOffers = () => {
             Received Offers
           </h2>
           <div className="w-full p-5">
-            <OffersTable
-              offerData={offerData}
+            <OrderTable
+              orderData={orderData}
               refresh={refresh}
               action={action}
             />
@@ -168,4 +168,4 @@ const ReceivedOffers = () => {
   );
 };
 
-export default ReceivedOffers;
+export default MyOrders;

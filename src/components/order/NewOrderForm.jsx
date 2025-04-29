@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Section from "../Section";
-import {
-  ImportCountries,
-  ProduuctCategories,
-  Conditions,
-} from "../../reference/RequestFormConsts";
 import { getCurrentLoggedinUser } from "../../appwrite/auth";
 import Swal from "sweetalert2";
 import { createOrder } from "../../appwrite/database";
