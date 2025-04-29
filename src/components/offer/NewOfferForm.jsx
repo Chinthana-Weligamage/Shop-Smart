@@ -7,7 +7,7 @@ import {
 } from "../../reference/RequestFormConsts";
 import { getCurrentLoggedinUser } from "../../appwrite/auth";
 import Swal from "sweetalert2";
-import { createOffer } from "../../appwrite/database";
+import { createOffer, getCreatorIdByRequestId } from "../../appwrite/database";
 
 const NewOfferForm = () => {
   const requestId = window.location.pathname.split("/").pop();
@@ -22,8 +22,17 @@ const NewOfferForm = () => {
     getUser();
   }, []);
 
+  useEffect(() => {
+    const getCreatorId = async () => {
+      const response = await getCreatorIdByRequestId(requestId);
+      setFormData({ ...formData, receiverId: response[0].creatorId });
+    };
+    getCreatorId();
+  }, [requestId]);
+
   const initialFormStructure = {
     creatorId: "",
+    receiverId: "",
     productRequests: requestId,
     offerTitle: "",
     offerPrice: 0.0,

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
 import LogoutModal from "./LogoutModal";
+import { BsStars } from "react-icons/bs";
 
 const Header = ({ isAuthenticated }) => {
   const savedIsChecked = localStorage.getItem("darkModeOn");
@@ -16,7 +17,7 @@ const Header = ({ isAuthenticated }) => {
   }, [darkModeOn]);
 
   return (
-    <div className="navbar bg-neutral shadow-sm flex gap-2 px-10 py-5">
+    <div className="navbar bg-neutral shadow-sm flex justify-between gap-2 px-10 py-5">
       {/* Logo */}
       <div className="w-1/5">
         <a href="/" className="text-xl text-white font-bold">
@@ -24,14 +25,28 @@ const Header = ({ isAuthenticated }) => {
         </a>
       </div>
 
-      {/* Search Box */}
-      <div className="flex-1  w-3/5">
-        <input
-          type="search"
-          placeholder="Search"
-          className="input input-bordered w-full"
-        />
-      </div>
+      <nav className="text-primary-content max-h-10 h-10 flex items-center justify-center">
+        <ul className="w-full inline-flex gap-7 cursor-pointer justify-center text-white font-semibold">
+          <li>
+            <a
+              href={"/#suggestions"}
+              className="hover:text-accent flex gap-1 flex-row items-center"
+            >
+              <BsStars /> AI Recomendations
+            </a>
+          </li>
+          <li>
+            <a href={"/new-request"} className="hover:text-accent">
+              New Request
+            </a>
+          </li>
+          <li>
+            <a href={"/all-requests"} className="hover:text-accent">
+              Request Pool
+            </a>
+          </li>
+        </ul>
+      </nav>
 
       {/* Header Buttons */}
 

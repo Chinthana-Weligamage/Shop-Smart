@@ -8,8 +8,9 @@ import Fallback from "./pages/Fallback";
 import UserAccount from "./pages/UserAccount";
 import NewOffer from "./pages/NewOffer";
 import NewOrder from "./pages/NewOrder";
-import IncommingOffers from "./pages/IncommingOffers";
 import AllOffers from "./pages/AllOffers";
+import SentOffers from "./pages/SentOffers";
+import ReceivedOffers from "./pages/ReceivedOffers";
 
 function App() {
   return (
@@ -25,8 +26,8 @@ function App() {
         <Route path="/account" element={<UserAccount />} />
         <Route path="/new-offer/*" element={<NewOffer />} />
         <Route path="/new-order/*" element={<NewOrder />} />
-        <Route path="/in-offers/*" element={<IncommingOffers />} />
-        {/* <Route path="/out-offers/*" element={<NewOffer />} /> */}
+        <Route path="/sent-offers/*" element={<SentOffers />} />
+        <Route path="/received-offers/*" element={<ReceivedOffers />} />
 
         <Route path="*" element={<Fallback />} />
       </Routes>

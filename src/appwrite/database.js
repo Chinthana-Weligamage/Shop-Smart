@@ -1,4 +1,4 @@
-import { client, account, ID, Databases } from "./config";
+import { client, account, ID, Databases, Query } from "./config";
 
 const databases = new Databases(client);
 
@@ -38,6 +38,22 @@ export function getAllProductRequests() {
   );
 }
 
+export function getCreatorIdByRequestId(requestId) {
+  const promise = databases.listDocuments(DATABASE_ID, REQUEST_COLLECTION_ID, [
+    Query.select(["creatorId"]),
+    Query.equal("$id", [requestId]),
+  ]);
+
+  return promise.then(
+    function (response) {
+      return response.documents; // Success
+    },
+    function (error) {
+      throw error; // Failure
+    }
+  );
+}
+
 export function createOffer(data) {
   const promise = databases.createDocument(
     DATABASE_ID,
@@ -58,6 +74,36 @@ export function createOffer(data) {
 
 export function getAllOffers() {
   const promise = databases.listDocuments(DATABASE_ID, OFFER_COLLECTION_ID);
+
+  return promise.then(
+    function (response) {
+      return response.documents; // Success
+    },
+    function (error) {
+      throw error; // Failure
+    }
+  );
+}
+
+export function getSentOffers(creatorId) {
+  const promise = databases.listDocuments(DATABASE_ID, OFFER_COLLECTION_ID, [
+    Query.equal("creatorId", [creatorId]),
+  ]);
+
+  return promise.then(
+    function (response) {
+      return response.documents; // Success
+    },
+    function (error) {
+      throw error; // Failure
+    }
+  );
+}
+
+export function getReceivedOffers(receiverId) {
+  const promise = databases.listDocuments(DATABASE_ID, OFFER_COLLECTION_ID, [
+    Query.equal("receiverId", [receiverId]),
+  ]);
 
   return promise.then(
     function (response) {
