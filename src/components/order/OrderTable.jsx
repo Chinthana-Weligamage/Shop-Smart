@@ -1,10 +1,12 @@
 import React from "react";
 
-const OrderTable = ({ orderrData, action, refresh }) => {
+const OrderTable = ({ orderData, action, refresh }) => {
   const statusColor = {
-    Pending: "btn-warning",
-    Accepted: "btn-success",
-    Declined: "btn-error",
+    "In Progress": "btn-secondary",
+    Delivered: "btn-warning",
+    Received: "btn-warning",
+    Completed: "btn-success",
+    Canceled: "btn-error",
   };
 
   return (
@@ -18,10 +20,8 @@ const OrderTable = ({ orderrData, action, refresh }) => {
                 <input type="checkbox" className="checkbox" />
               </label>
             </th>
-            <th>Offer Details</th>
-            <th className="text-center">Offer Price</th>
-            <th className="text-center">Condition</th>
-            <th className="text-center">From</th>
+            <th>Order Details</th>
+            <th className="text-center">Order Value</th>
             <th className="text-center">Est. Delivery</th>
             <th className="text-center">Status</th>
             <th className="text-center">Action</th>
@@ -29,8 +29,8 @@ const OrderTable = ({ orderrData, action, refresh }) => {
           </tr>
         </thead>
         <tbody>
-          {offerData.map((offer) => (
-            <tr key={offer.$id}>
+          {orderData.map((order) => (
+            <tr key={order.$id}>
               <th className="text-center max-w-fit px-1">
                 <label>
                   <input type="checkbox" className="checkbox" />
@@ -41,40 +41,38 @@ const OrderTable = ({ orderrData, action, refresh }) => {
                   <div className="avatar">
                     <div className="mask mask-squircle h-12 w-12">
                       <img
-                        src={offer.offerImageUrl}
+                        src={order.orderImageUrl}
                         alt="Avatar Tailwind CSS Component"
                       />
                     </div>
                   </div>
                   <div>
-                    <div className="font-bold">{offer.offerTitle}</div>
+                    <div className="font-bold">{order.orderTitle}</div>
                     <div className="text-sm opacity-50">
-                      {offer.offerMsg.length > 50
-                        ? `${offer.offerMsg.substring(0, 47)}...`
-                        : offer.offerMsg}
+                      {order.orderMsg.length > 50
+                        ? `${order.orderMsg.substring(0, 47)}...`
+                        : order.orderMsg}
                     </div>
                   </div>
                 </div>
               </td>
-              <td className="text-center">{offer.offerPrice} USD</td>
-              <td className="text-center">{offer.condition}</td>
-              <td className="text-center">{offer.importCountry}</td>
+              <td className="text-center">{order.orderValue} USD</td>
               <td className="text-center">
                 {new Intl.DateTimeFormat("en-US", {
                   year: "numeric",
                   month: "short",
                   day: "2-digit",
-                }).format(new Date(offer.estDelivery))}
+                }).format(new Date(order.estDelivery))}
               </td>
               <td className="text-center">
                 <button
-                  className={`btn btn-xs ${statusColor[offer.offerStatus]}`}
+                  className={`btn btn-xs ${statusColor[order.orderStatus]}`}
                 >
-                  {offer.offerStatus}
+                  {order.orderStatus}
                 </button>
               </td>
 
-              <td>{action(offer)}</td>
+              <td>{action(order)}</td>
             </tr>
           ))}
         </tbody>

@@ -16,8 +16,8 @@ const NavLinks = [
     url: "/received-offers",
   },
   {
-    title: "Support",
-    url: "/support",
+    title: "My Orders",
+    url: "/my-orders",
   },
 ];
 

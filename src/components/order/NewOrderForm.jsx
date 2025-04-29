@@ -18,14 +18,23 @@ const NewOrderForm = () => {
     getUser();
   }, []);
 
+  useEffect(() => {
+    const getCreatorId = async () => {
+      const response = await getCreatorIdByOfferId(offerId);
+      setFormData({ ...formData, receiverId: response[0].creatorId });
+    };
+    getCreatorId();
+  }, [offerId]);
+
   const initialFormStructure = {
     creatorId: "",
+    receiverId: "",
     offers: offerId,
     orderTitle: "",
     orderValue: 0.0,
     estDelivery: "",
     orderMsg: "",
-    status: "In Progress",
+    orderStatus: "In Progress",
     orderImageUrl:
       "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
   };

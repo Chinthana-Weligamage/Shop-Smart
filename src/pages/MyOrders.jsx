@@ -3,17 +3,19 @@ import Protector from "../components/Protector";
 import Layout from "../components/Layout";
 import OrderTable from "../components/order/OrderTable";
 import Section from "../components/Section";
-import { getReceivedOffers, updateOfferStatus } from "../appwrite/database";
+import { getAllOrders } from "../appwrite/database";
 import Loading from "../components/common/Loading";
 import { getCurrentLoggedinUser } from "../appwrite/auth";
 import Swal from "sweetalert2";
+import { updateOrderStatus } from "../appwrite/database";
 
 import { FaCircleCheck } from "react-icons/fa6";
 import { MdCancel } from "react-icons/md";
+import { FaTrashAlt } from "react-icons/fa";
 
 const MyOrders = () => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [offerData, setOfferData] = useState([]);
+  const [orderData, setOrderData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -26,15 +28,21 @@ const MyOrders = () => {
 
   useEffect(() => {
     if (currentUser) {
-      fetchOffers(currentUser);
+      fetchOrders(currentUser);
     }
   }, [currentUser]);
 
-  const fetchOffers = async () => {
+  const fetchOrders = async () => {
     if (!currentUser) return;
+
     try {
-      const response = await getReceivedOffers(currentUser?.$id);
-      setOfferData(response);
+      const response = await getAllOrders(currentUser?.$id);
+      const filteredOrders = response.filter(
+        (order) =>
+          order.creatorId === currentUser.$id ||
+          order.receiverId === currentUser.$id
+      );
+      setOrderData(filteredOrders);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -47,7 +55,7 @@ const MyOrders = () => {
   };
 
   useEffect(() => {
-    fetchOffers();
+    fetchOrders();
   }, []);
 
   if (isLoading) {
@@ -55,93 +63,246 @@ const MyOrders = () => {
   }
 
   const refresh = () => {
-    fetchOffers();
+    fetchOrders();
   };
-  const handleAcceptOffer = async (offer) => {
+
+  const handleOrderReceived = async (order) => {
     const result = await Swal.fire({
-      title: "Do you want to Accept this offer?",
-      text: `You will be charged $${offer.offerPrice} and a service fee of 5% by accepting this offer.`,
+      title: "Do you Received this order?",
+      text: "This order will be marked as received and Payment will be released to the traveller.",
       icon: "info",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, accept it!",
+      confirmButtonText: "Yes, I Received!",
     });
 
     if (result.isConfirmed) {
       try {
-        await updateOfferStatus(offer.$id, "Accepted");
-        Swal.fire("Accepted!", "The offer has been accepted.", "success");
+        const nextStatus =
+          order.orderStatus === "Delivered" ? "Completed" : "Received";
+        await updateOrderStatus(order.$id, nextStatus);
+        Swal.fire(
+          "Marked as Received!",
+          "The order has been received.",
+          "success"
+        );
         refresh();
       } catch (error) {
         Swal.fire(
           "Error!",
-          error.message || "Failed to accept the offer.",
+          error.message || "Failed to update the order. Please try again.",
           "error"
         );
       }
     }
   };
 
-  const handleDeclineOffer = async (offer) => {
+  const handleOrderNotReceived = async (order) => {
     const result = await Swal.fire({
       title: "Are you sure?",
-      text: "Do you want to decline this offer?",
+      text: "Not received the order even after 14 days from estimated delivery date, request a refund",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, decline it!",
+      confirmButtonText: "Yes, Cancel my order Refund!",
     });
 
     if (result.isConfirmed) {
       try {
-        await updateOfferStatus(offer.$id, "Declined");
-        Swal.fire("Declined!", "The offer has been declined.", "success");
+        await updateOrderStatus(order.$id, "Canceled");
+        Swal.fire(
+          "Canceled!",
+          "The order has been Canceled. Refund process has been initiated.",
+          "success"
+        );
         refresh();
       } catch (error) {
         Swal.fire(
           "Error!",
-          error.message || "Failed to decline the offer.",
+          error.message || "Failed to cancel the order.",
           "error"
         );
       }
     }
   };
 
-  const action = (offer) => {
-    if (offer.offerStatus === "Accepted") {
-      return (
-        <div className="flex flex-row gap-2 items-center justify-center">
-          <span className="text-error text-xs">
-            No action available for accepted offers.
-          </span>
-        </div>
-      );
-    } else if (offer.offerStatus === "Declined") {
-      return (
-        <div className="flex flex-row gap-2 items-center justify-center">
-          <span className="text-error text-xs">
-            No action available for declined offers.
-          </span>
-        </div>
-      );
-    } else if (offer.offerStatus === "Pending") {
+  const handleOrderDelivered = async (order) => {
+    const result = await Swal.fire({
+      title: "Do you Delivered this order?",
+      text: "This order will be marked as delivered.",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, I Delivered!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const nextStatus =
+          order.orderStatus === "Received" ? "Completed" : "Delivered";
+        await updateOrderStatus(order.$id, nextStatus);
+        Swal.fire(
+          "Marked as Delivered!",
+          "The order has been delivered.",
+          "success"
+        );
+        refresh();
+      } catch (error) {
+        Swal.fire(
+          "Error!",
+          error.message || "Failed to update the order. Please try again.",
+          "error"
+        );
+      }
+    }
+  };
+
+  const handleOrderCancel = async (order) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This order will be canceled and payment will be refunded to the buyer",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel this order!",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        await updateOrderStatus(order.$id, "Canceled");
+        Swal.fire(
+          "Canceled!",
+          "The order has been Canceled. Refund process has been initiated.",
+          "success"
+        );
+        refresh();
+      } catch (error) {
+        Swal.fire(
+          "Error!",
+          error.message || "Failed to cancel the order.",
+          "error"
+        );
+      }
+    }
+  };
+
+  const action = (order) => {
+    if (
+      order.orderStatus === "In Progress" ||
+      order.orderStatus === "Delivered" ||
+      order.orderStatus === "Received"
+    ) {
+      if (order.creatorId === currentUser.$id) {
+        if (order.orderStatus === "Delivered") {
+          return (
+            <div className="flex flex-row gap-2 items-center justify-center">
+              <span className="text-error text-xs">
+                Waiting for the other party to update the order status
+              </span>
+            </div>
+          );
+        } else {
+          return (
+            <div className="flex flex-row gap-2 items-center justify-center">
+              <button
+                className="btn btn-sm btn-success flex flex-row gap-1 items-center justify-center text-white"
+                title="Mark as Order Delivered"
+                onClick={() => handleOrderDelivered(order)}
+              >
+                <FaCircleCheck /> Mark as Delivered
+              </button>
+              <button
+                className="btn btn-sm btn-error flex flex-row gap-1 items-center justify-center text-white"
+                title="Cancel Order"
+                onClick={() => handleOrderCancel(order)}
+              >
+                <MdCancel /> Cancel Order
+              </button>
+            </div>
+          );
+        }
+      } else if (order.receiverId === currentUser.$id) {
+        if (order.orderStatus === "Received") {
+          return (
+            <div className="flex flex-row gap-2 items-center justify-center">
+              <span className="text-error text-xs">
+                Waiting for the other party to update the order status
+              </span>
+            </div>
+          );
+        } else {
+          return (
+            <div>
+              <div className="flex flex-row gap-2 items-center justify-center">
+                <button
+                  className="btn btn-sm btn-success flex flex-row gap-1 items-center justify-center text-white w-2/3"
+                  title="Mark as Order Received"
+                  onClick={() => handleOrderReceived(order)}
+                >
+                  <FaCircleCheck /> Order Received
+                </button>
+                <button
+                  className="btn btn-sm btn-error flex flex-row gap-1 items-center justify-center text-white w-1/3"
+                  title="If you have not received the order, request a refund"
+                  onClick={() => handleOrderNotReceived(order)}
+                  disabled={
+                    new Date(order.estDelivery) >
+                    new Date(new Date().setDate(new Date().getDate() - 14))
+                  }
+                >
+                  <MdCancel /> Request Refund
+                </button>
+              </div>
+              <div className="text-error text-xs">
+                Not received the order even after 14 days from estimated
+                delivery date, request a refund
+              </div>
+            </div>
+          );
+        }
+      }
+    } else if (order.orderStatus === "Pending") {
       return (
         <div className="flex flex-row gap-2 items-center justify-center">
           <button
             className="btn btn-sm btn-success flex flex-row gap-1 items-center justify-center text-white"
             title="Accept Offer"
-            onClick={() => handleAcceptOffer(offer)}
+            onClick={() => handleAcceptOffer(order)}
           >
             <FaCircleCheck /> Accept
           </button>
           <button
             className="btn btn-sm btn-error flex flex-row gap-1 items-center justify-center text-white"
             title="Accept Offer"
-            onClick={() => handleDeclineOffer(offer)}
+            onClick={() => handleDeclineOffer(order)}
           >
             <MdCancel /> Decline
+          </button>
+        </div>
+      );
+      // } else if (
+      //   order.orderStatus === "Delivered" ||
+      //   order.orderStatus === "Received"
+      // ) {
+      //   return (
+      //     <div className="flex flex-row gap-2 items-center justify-center">
+      //       <span className="text-error text-xs">
+      //         Waiting for the other party to update the order status
+      //       </span>
+      //     </div>
+      //   );
+    } else if (
+      order.orderStatus === "Completed" ||
+      order.orderStatus === "Canceled"
+    ) {
+      return (
+        <div className="flex flex-row gap-2 items-center justify-center">
+          <button className="btn btn-xs btn-circle" title="Delete Order">
+            <FaTrashAlt />
           </button>
         </div>
       );
@@ -153,7 +314,7 @@ const MyOrders = () => {
       <Layout>
         <Section bgColor="base-200">
           <h2 className="text-2xl font-bold w-full text-center my-3">
-            Received Offers
+            My Orders
           </h2>
           <div className="w-full p-5">
             <OrderTable

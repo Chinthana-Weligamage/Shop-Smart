@@ -134,7 +134,23 @@ export function updateOfferStatus(offerId, status) {
     }
   );
 }
+export function getCreatorIdByOfferId(offerId) {
+  const promise = databases.getDocument(
+    DATABASE_ID,
+    OFFER_COLLECTION_ID,
+    offerId,
+    [Query.equal("$id", [offerId])]
+  );
 
+  return promise.then(
+    function (response) {
+      return response.documents; // Success
+    },
+    function (error) {
+      throw error; // Failure
+    }
+  );
+}
 export async function createOrder(data) {
   try {
     // Step 1: Create the Order
@@ -170,6 +186,26 @@ export function getAllOrders() {
   return promise.then(
     function (response) {
       return response.documents; // Success
+    },
+    function (error) {
+      throw error; // Failure
+    }
+  );
+}
+
+export function updateOrderStatus(orderId, status) {
+  const promise = databases.updateDocument(
+    DATABASE_ID,
+    ORDER_COLLECTION_ID,
+    orderId,
+    {
+      orderStatus: status,
+    }
+  );
+
+  return promise.then(
+    function (response) {
+      return response; // Success
     },
     function (error) {
       throw error; // Failure
