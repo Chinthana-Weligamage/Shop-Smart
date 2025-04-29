@@ -8,6 +8,7 @@ import {
 import { getCurrentLoggedinUser } from "../../appwrite/auth";
 import Swal from "sweetalert2";
 import { createProductRequest } from "../../appwrite/database";
+import { uploadImage } from "../../appwrite/storage";
 
 const NewRequestForm = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -36,6 +37,7 @@ const NewRequestForm = () => {
 
   const [image, setImage] = useState(null);
   const [formData, setFormData] = useState(initialFormStructure);
+  const [imageRes, setImageRes] = useState("");
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -47,6 +49,11 @@ const NewRequestForm = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  useEffect(() => {
+    const res = uploadImage(image);
+    console.log(res);
+  }, [image]);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
