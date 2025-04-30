@@ -17,3 +17,16 @@ export function uploadImage(imageFile) {
     }
   );
 }
+
+export function deleteImage(imageId) {
+  const promise = storage.deleteFile(BUCKET_ID, imageId);
+
+  return promise.then(
+    function (response) {
+      return response; // Success
+    },
+    function (error) {
+      return error; // Failure
+    }
+  );
+}

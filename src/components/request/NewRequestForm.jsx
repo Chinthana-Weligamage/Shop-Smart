@@ -8,7 +8,7 @@ import {
 import { getCurrentLoggedinUser } from "../../appwrite/auth";
 import Swal from "sweetalert2";
 import { createProductRequest } from "../../appwrite/database";
-import { uploadImage } from "../../appwrite/storage";
+import { deleteImage, uploadImage } from "../../appwrite/storage";
 
 const NewRequestForm = () => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -37,9 +37,12 @@ const NewRequestForm = () => {
 
   const [image, setImage] = useState(null);
   const [formData, setFormData] = useState(initialFormStructure);
-  const [imageRes, setImageRes] = useState("");
+  const [imageRes, setImageRes] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleImageChange = (event) => {
+    setIsUploading(true);
+
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -47,16 +50,28 @@ const NewRequestForm = () => {
         setImage(reader.result);
       };
 
-      const res = uploadImage(image);
-      console.log(res);
+      uploadImage(file)
+        .then((res) => {
+          console.log(res);
+          setImageRes(res);
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: "Error!",
+            text: "Image upload failed: " + error.message,
+            icon: "error",
+          });
+        });
       reader.readAsDataURL(file);
+      setIsUploading(false);
     }
   };
 
   useEffect(() => {
-    const res = uploadImage(image);
-    console.log(res);
-  }, [image]);
+    if (imageRes) {
+      setFormData({ ...formData, imageUrl: imageRes });
+    }
+  }, [imageRes]);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -77,8 +92,6 @@ const NewRequestForm = () => {
       if (formData.creatorId === "") {
         throw new Error("Your Login has been expired. Please login again.");
       }
-
-      console.log(formData);
 
       const response = await createProductRequest(formData);
 
@@ -131,6 +144,14 @@ const NewRequestForm = () => {
       setFormData({ ...formData, creatorId: currentUser.$id });
     }
   }, [currentUser]);
+
+  const handleRemoveImage = () => {
+    const imageId = imageRes.split("/").reverse()[1];
+    deleteImage(imageId);
+    setImage(null);
+    setImageRes(null);
+    setIsUploading(false);
+  };
 
   return (
     <Section bgColor="base-100">
@@ -286,7 +307,7 @@ const NewRequestForm = () => {
                       src={image}
                       alt="Product Preview"
                       className="h-full w-full object-contain rounded-lg "
-                      onClick={() => setImage(null)}
+                      onClick={handleRemoveImage}
                     />
                   </div>
                 ) : (
@@ -312,7 +333,7 @@ const NewRequestForm = () => {
                 className="btn btn-primary"
                 type="submit"
                 name="submit"
-                disabled={buttonDisabled}
+                disabled={buttonDisabled || isUploading}
               >
                 Place your Request
               </button>

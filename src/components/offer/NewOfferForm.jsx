@@ -8,6 +8,7 @@ import {
 import { getCurrentLoggedinUser } from "../../appwrite/auth";
 import Swal from "sweetalert2";
 import { createOffer, getCreatorIdByRequestId } from "../../appwrite/database";
+import { uploadImage } from "../../appwrite/storage";
 
 const NewOfferForm = () => {
   const requestId = window.location.pathname.split("/").pop();
@@ -47,15 +48,33 @@ const NewOfferForm = () => {
 
   const [image, setImage] = useState(null);
   const [formData, setFormData] = useState(initialFormStructure);
+  const [imageRes, setImageRes] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleImageChange = (event) => {
+    setIsUploading(true);
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         setImage(reader.result);
       };
+
+      uploadImage(file)
+        .then((res) => {
+          console.log(res);
+          setImageRes(res);
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: "Error!",
+            text: "Image upload failed: " + error.message,
+            icon: "error",
+          });
+        });
+
       reader.readAsDataURL(file);
+      setIsUploading(false);
     }
   };
 
