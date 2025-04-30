@@ -301,7 +301,11 @@ const MyOrders = () => {
     ) {
       return (
         <div className="flex flex-row gap-2 items-center justify-center">
-          <button className="btn btn-xs btn-circle" title="Delete Order">
+          <button
+            className="btn btn-xs btn-circle"
+            title="Delete Order"
+            onClick={() => console.log("Work in progress")}
+          >
             <FaTrashAlt />
           </button>
         </div>

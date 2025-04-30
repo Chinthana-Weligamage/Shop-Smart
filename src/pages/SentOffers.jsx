@@ -84,10 +84,18 @@ const SentOffers = () => {
     } else if (offer.offerStatus === "Pending") {
       return (
         <div className="flex flex-row gap-2 items-center justify-center">
-          <button className="btn btn-xs btn-circle" title="Edit Offer">
+          <button
+            className="btn btn-xs btn-circle"
+            title="Edit Offer"
+            onClick={() => console.log("Work in progress")}
+          >
             <FaEdit />
           </button>
-          <button className="btn btn-xs btn-circle" title="Delete Offer">
+          <button
+            className="btn btn-xs btn-circle"
+            title="Delete Offer"
+            onClick={() => console.log("Work in progress")}
+          >
             <FaTrashAlt />
           </button>
         </div>

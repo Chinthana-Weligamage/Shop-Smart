@@ -70,11 +70,9 @@ const OffersTable = ({ offerData, action, refresh }) => {
                 }).format(new Date(offer.estDelivery))}
               </td>
               <td className="text-center">
-                <button
-                  className={`btn btn-xs ${statusColor[offer.offerStatus]}`}
-                >
+                <div className={`btn btn-xs ${statusColor[offer.offerStatus]}`}>
                   {offer.offerStatus}
-                </button>
+                </div>
               </td>
 
               <td>{action(offer)}</td>

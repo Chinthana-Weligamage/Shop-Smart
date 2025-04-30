@@ -12,10 +12,12 @@ const Hero = () => {
             the world
           </p>
           <div className="flex gap-4 mt-10">
-            <button className="btn btn-lg btn-primary">Place a Request</button>
-            <button className="btn btn-lg btn-secondary">
+            <a className="btn btn-lg btn-primary" href="/new-request">
+              Place a Request
+            </a>
+            <a className="btn btn-lg btn-secondary" href="/all-requests">
               Fulfill a Request
-            </button>
+            </a>
           </div>
         </div>
         <div className="w-1/2">
