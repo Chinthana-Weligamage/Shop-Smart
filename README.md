@@ -1,4 +1,4 @@
-# 🌍 ShopSmart A Modern E-Commerce Platform
+#  ShopSmart A Modern E-Commerce Platform
 
 ## 📌 Project Overview
 
@@ -8,16 +8,16 @@
 
 ## ❗ The Problem We're Solving
 
-### 🛍️ Problem 01: High International Shopping Costs
+###  Problem 01: High International Shopping Costs
 - International purchases are expensive due to high shipping charges and import taxes.
 - Travelers often travel with unused luggage space that goes to waste.
 
-### 🚚 Problem 02: Lack of Transparency
+###  Problem 02: Lack of Transparency
 - Traditional delivery systems lack real-time tracking and proof of transaction transparency.
 
 ---
 
-## 🎯 Project Objectives
+##  Project Objectives
 
 - Provide **tax-free international shopping** by enabling travelers to deliver requested products.
 - Allow **Travelers** to earn additional income.
@@ -26,21 +26,21 @@
 
 ---
 
-## 🚀 Special Feature
+##  Special Feature
 
-#### 🤖 AI Best Deal Suggester 
+####  AI Best Deal Suggester 
 An AI-powered module that suggests trending products to users by analyzing product trends and popularity to enhance the buying experience.
 
 ---
 
 ## 🔧 Core Functionalities
 
-#### 🛒 Product Requests
-#### ✉️ Send an Offer 
-#### 📦 Order Management
+####  Product Requests
+####  Send an Offer 
+####  Order Management
 
 
-## 🧠 Technologies Used
+##  Technologies Used
 
 - **Frontend**: React.js / HTML / CSS / JavaScript
 - **Backend**: Node.js / Express.js
