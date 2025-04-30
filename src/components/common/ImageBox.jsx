@@ -4,13 +4,13 @@ const ImageBox = ({ children, imageSrc }) => {
   return (
     <>
       <button
-        className="btn"
+        className="cursor-pointer"
         onClick={() => document.getElementById("imageModal").showModal()}
       >
         {children}
       </button>
       <dialog id="imageModal" className="modal">
-        <div className="modal-box">
+        <div className="modal-box w-11/12 max-w-5xl">
           <img
             src={imageSrc}
             alt="Image"

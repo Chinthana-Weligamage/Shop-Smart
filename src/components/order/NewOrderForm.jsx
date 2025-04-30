@@ -3,7 +3,7 @@ import Section from "../Section";
 import { getCurrentLoggedinUser } from "../../appwrite/auth";
 import Swal from "sweetalert2";
 import { createOrder } from "../../appwrite/database";
-import { uploadImage } from "../../appwrite/storage";
+import { uploadImage, deleteImage } from "../../appwrite/storage";
 import { getCreatorIdByOfferId } from "../../appwrite/database";
 
 const NewOrderForm = () => {
@@ -43,17 +43,41 @@ const NewOrderForm = () => {
 
   const [image, setImage] = useState(null);
   const [formData, setFormData] = useState(initialFormStructure);
+  const [imageRes, setImageRes] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleImageChange = (event) => {
+    setIsUploading(true);
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         setImage(reader.result);
       };
+
+      uploadImage(file)
+        .then((res) => {
+          console.log(res);
+          setImageRes(res);
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: "Error!",
+            text: "Image upload failed: " + error.message,
+            icon: "error",
+          });
+        });
+
       reader.readAsDataURL(file);
+      setIsUploading(false);
     }
   };
+
+  useEffect(() => {
+    if (imageRes) {
+      setFormData({ ...formData, orderImageUrl: imageRes });
+    }
+  }, [imageRes]);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -128,6 +152,14 @@ const NewOrderForm = () => {
     }
   }, [currentUser]);
 
+  const handleRemoveImage = () => {
+    const imageId = imageRes.split("/").reverse()[1];
+    deleteImage(imageId);
+    setImage(null);
+    setImageRes(null);
+    setIsUploading(false);
+  };
+
   return (
     <Section bgColor="base-100">
       <form onSubmit={handleFormSubmit}>
@@ -149,7 +181,7 @@ const NewOrderForm = () => {
                       src={image}
                       alt="Product Preview"
                       className="h-full w-full object-contain rounded-lg "
-                      onClick={() => setImage(null)}
+                      onClick={handleRemoveImage}
                     />
                   </div>
                 ) : (
@@ -274,7 +306,7 @@ const NewOrderForm = () => {
                 className="btn btn-primary"
                 type="submit"
                 name="submit"
-                disabled={buttonDisabled}
+                disabled={buttonDisabled || isUploading}
               >
                 Create Order
               </button>

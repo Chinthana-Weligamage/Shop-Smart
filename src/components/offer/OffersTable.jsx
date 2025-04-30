@@ -1,6 +1,5 @@
 import React from "react";
 import ImageBox from "../common/ImageBox";
-ImageBox;
 
 const OffersTable = ({ offerData, action, refresh }) => {
   const statusColor = {
@@ -41,14 +40,14 @@ const OffersTable = ({ offerData, action, refresh }) => {
               <td>
                 <div className="flex items-center gap-3">
                   <div className="avatar">
-                    <div className="mask mask-squircle h-12 w-12">
-                      <ImageBox imageSrc={offer.offerImageUrl}>
+                    <ImageBox imageSrc={offer.offerImageUrl}>
+                      <div className="mask mask-squircle h-12 w-12">
                         <img
                           src={offer.offerImageUrl}
                           alt="Avatar Tailwind CSS Component"
                         />
-                      </ImageBox>
-                    </div>
+                      </div>
+                    </ImageBox>
                   </div>
                   <div>
                     <div className="font-bold">{offer.offerTitle}</div>

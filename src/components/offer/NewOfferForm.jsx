@@ -8,7 +8,7 @@ import {
 import { getCurrentLoggedinUser } from "../../appwrite/auth";
 import Swal from "sweetalert2";
 import { createOffer, getCreatorIdByRequestId } from "../../appwrite/database";
-import { uploadImage } from "../../appwrite/storage";
+import { uploadImage, deleteImage } from "../../appwrite/storage";
 
 const NewOfferForm = () => {
   const requestId = window.location.pathname.split("/").pop();
@@ -78,6 +78,12 @@ const NewOfferForm = () => {
     }
   };
 
+  useEffect(() => {
+    if (imageRes) {
+      setFormData({ ...formData, offerImageUrl: imageRes });
+    }
+  }, [imageRes]);
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     setButtonDisabled(true);
@@ -137,6 +143,14 @@ const NewOfferForm = () => {
       setFormData({ ...formData, creatorId: currentUser.$id });
     }
   }, [currentUser]);
+
+  const handleRemoveImage = () => {
+    const imageId = imageRes.split("/").reverse()[1];
+    deleteImage(imageId);
+    setImage(null);
+    setImageRes(null);
+    setIsUploading(false);
+  };
 
   return (
     <Section bgColor="base-100">
@@ -295,7 +309,7 @@ const NewOfferForm = () => {
                       src={image}
                       alt="Product Preview"
                       className="h-full w-full object-contain rounded-lg "
-                      onClick={() => setImage(null)}
+                      onClick={handleRemoveImage}
                     />
                   </div>
                 ) : (
@@ -320,7 +334,7 @@ const NewOfferForm = () => {
                 className="btn btn-secondary"
                 type="submit"
                 name="submit"
-                disabled={buttonDisabled}
+                disabled={buttonDisabled || isUploading}
               >
                 Send Offer
               </button>

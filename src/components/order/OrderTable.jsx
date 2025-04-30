@@ -1,4 +1,5 @@
 import React from "react";
+import ImageBox from "../common/ImageBox";
 
 const OrderTable = ({ orderData, action, refresh }) => {
   const statusColor = {
@@ -39,12 +40,14 @@ const OrderTable = ({ orderData, action, refresh }) => {
               <td>
                 <div className="flex items-center gap-3">
                   <div className="avatar">
-                    <div className="mask mask-squircle h-12 w-12">
-                      <img
-                        src={order.orderImageUrl}
-                        alt="Avatar Tailwind CSS Component"
-                      />
-                    </div>
+                    <ImageBox imageSrc={order.orderImageUrl}>
+                      <div className="mask mask-squircle h-12 w-12">
+                        <img
+                          src={order.orderImageUrl}
+                          alt="Avatar Tailwind CSS Component"
+                        />
+                      </div>
+                    </ImageBox>
                   </div>
                   <div>
                     <div className="font-bold">{order.orderTitle}</div>
