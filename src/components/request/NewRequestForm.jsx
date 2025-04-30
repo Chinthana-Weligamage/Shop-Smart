@@ -46,6 +46,9 @@ const NewRequestForm = () => {
       reader.onload = () => {
         setImage(reader.result);
       };
+
+      const res = uploadImage(image);
+      console.log(res);
       reader.readAsDataURL(file);
     }
   };
@@ -71,7 +74,7 @@ const NewRequestForm = () => {
         throw new Error("Please fill in all the required fields.");
       }
 
-      if (formData.userId === "") {
+      if (formData.creatorId === "") {
         throw new Error("Your Login has been expired. Please login again.");
       }
 
