@@ -1,79 +1,51 @@
-# Shop-Smart
+# 🌍 ShopSmart A Modern E-Commerce Platform
 
-Welcome to Shop-Smart, a project developed as part of the B.Sc (Hons) Information Technology program at SLIIT. This project aims to provide a smart shopping experience for users.
+## 📌 Project Overview
 
-## Table of Contents
+**ShopSmart** is an innovative platform that connects **Buyers** who want to purchase international products with **Travelers** who have unused baggage space. This peer-to-peer system reduces the cost of international shopping by eliminating high shipping fees and taxes, while also helping travelers earn extra income by delivering items during their trips.
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+---
 
-## Introduction
+## ❗ The Problem We're Solving
 
-Shop-Smart is designed to enhance the shopping experience by providing various smart features. It helps users to manage their shopping lists, find the best deals, and much more.
+### 🛍️ Problem 01: High International Shopping Costs
+- International purchases are expensive due to high shipping charges and import taxes.
+- Travelers often travel with unused luggage space that goes to waste.
 
-## Features
+### 🚚 Problem 02: Lack of Transparency
+- Traditional delivery systems lack real-time tracking and proof of transaction transparency.
 
-- User-friendly interface
-- Shopping list management
-- Deal finder
-- Price comparison
-- Product recommendations
+---
 
-## Installation
+## 🎯 Project Objectives
 
-To install and run Shop-Smart locally, follow these steps:
+- Provide **tax-free international shopping** by enabling travelers to deliver requested products.
+- Allow **Travelers** to earn additional income.
+- Empower **Buyers** to purchase goods at a lower cost.
+- Offer a **secure and transparent** ordering system with proofs and updates.
 
-1. Clone the repository:
-   ```bash
-   git clone https://gitea.creadew.vip/Chinthana-Weligamage/Shop-Smart.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd shop-smart
-   ```
-3. Install the required dependencies:
-   ```bash
-   npm install
-   ```
-4. Start the application:
-   ```bash
-   npm run dev
-   ```
+---
 
-## Usage
+## 🚀 Special Feature
 
-Once the application is running, you can access it via your web browser at `http://shopsmart.com`. From there, you can start managing your shopping lists and exploring other features.
+#### 🤖 AI Best Deal Suggester 
+An AI-powered module that suggests trending products to users by analyzing product trends and popularity to enhance the buying experience.
 
-## Contributing
+---
 
-We welcome contributions to Shop-Smart! If you would like to contribute, please follow these steps:
+## 🔧 Core Functionalities
 
-1. Fork the repository.
-2. Create a new branch:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. Make your changes and commit them:
-   ```bash
-   git commit -m "Add your commit message"
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-5. Open a pull request.
+#### 🛒 Product Requests
+#### ✉️ Send an Offer 
+#### 📦 Order Management
 
-## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+## 🧠 Technologies Used
 
-## Contact
+- **Frontend**: React.js / HTML / CSS / JavaScript
+- **Backend**: Node.js / Express.js
+- **Database**: MongoDB
+- **AI Module**: Custom ML agent (for deal suggestion)
+- **Tools**: Git, GitHub, Postman, VS Code
 
-For any questions or inquiries, please contact us at [chinthanaweligamage1+shopsmart@gmail.com](mailto:chinthanaweligamage1+shopsmart@gmail.com).
 
-Thank you for using Shop-Smart!
