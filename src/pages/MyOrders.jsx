@@ -36,7 +36,8 @@ const MyOrders = () => {
     if (!currentUser) return;
 
     try {
-      const response = await getAllOrders(currentUser?.$id);
+      const response = await getAllOrders();
+      console.log("Orders fetched successfully:", response);
       const filteredOrders = response.filter(
         (order) =>
           order.creatorId === currentUser.$id ||

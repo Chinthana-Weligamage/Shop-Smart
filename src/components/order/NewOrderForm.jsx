@@ -23,7 +23,8 @@ const NewOrderForm = () => {
   useEffect(() => {
     const getCreatorId = async () => {
       const response = await getCreatorIdByOfferId(offerId);
-      setFormData({ ...formData, receiverId: response[0].creatorId });
+      console.log(response);
+      setFormData({ ...formData, receiverId: response.receiverId });
     };
     getCreatorId();
   }, [offerId]);

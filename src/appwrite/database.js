@@ -138,13 +138,12 @@ export function getCreatorIdByOfferId(offerId) {
   const promise = databases.getDocument(
     DATABASE_ID,
     OFFER_COLLECTION_ID,
-    offerId,
-    [Query.equal("$id", [offerId])]
+    offerId
   );
 
   return promise.then(
     function (response) {
-      return response.documents; // Success
+      return response; // Success
     },
     function (error) {
       throw error; // Failure
